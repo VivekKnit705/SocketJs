@@ -1,7 +1,8 @@
 const { Socket } = require('socket.io');
 const io=require('socket.io')(3000,{
     cors:{
-        origin:['http://localhost:8080']
+        origin:['http://localhost:8080'],
+       
     }
 });
 
@@ -10,10 +11,23 @@ const io=require('socket.io')(3000,{
 io.on('connection',(Socket)=>{
     console.log("receive socket connection",Socket.id);
 
-    Socket.on('send-message',(receiverId,message)=>{
-        console.log(receiverId,message);
+    Socket.on('send-message',(message,room)=>{
+        console.log(message)
+        if(!room){
+            Socket.broadcast.emit('receive-message',message);  
+        }
+        else{
+            Socket.to(room).emit('receive-message',message);
+        }
     })
-    Socket.on('send-notification',(Notification)=>{
-        console.log(Notification);
-    })
+        
+        // Socket.emit("message-sent",{
+        //     message:"Succesfully sent",
+        //     data:message
+        // })
+    
+        Socket.on('join-room',(room,cb)=>{
+            Socket.join(room);
+            cb(`joined the room ${room}`); 
+        })
 })
