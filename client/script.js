@@ -4,6 +4,17 @@ const socket=await io('http://localhost:3000',{
     reconnectionAttempts:5,
     reconnectionDelay:2000
 }); // Async Function
+
+const socket2=await io('http://localhost:3000/notification');
+
+socket2.on('connect',()=>{
+    displayMessage("Connected to Notification namespace");
+})
+
+
+
+
+
 // socket.emit('send-message',{
 //     message:"Helo my first message trough socket"
 

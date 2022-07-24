@@ -31,3 +31,10 @@ io.on('connection',(Socket)=>{
             cb(`joined the room ${room}`); 
         })
 })
+
+
+const notificationSocket=io.of('/notification');
+notificationSocket.on('connection',(Socket)=>{
+    console.log("Notification NameSpace",Socket.id);  
+    // notificationSocket.broadcast.emit('send-notification');
+})
